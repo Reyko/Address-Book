@@ -13,6 +13,11 @@ class Person
   attr_accessor :first_name
   attr_accessor :last_name
   # TODO 1. Add more!
+  
+  attr_accessor :address
+  attr_accessor :phone_number
+  attr_accessor :mobile_number
+
 
   def initialize(shoes)
     self.shoes = shoes
@@ -54,8 +59,25 @@ class Person
       @last_name_field = shoes.edit_line
     end
 
+        shoes.flow do
+      shoes.caption "Address"
+      @address_field = shoes.edit_line
+    end
+
+    shoes.flow do
+      shoes.caption "Phone number"
+      @phone_number_field = shoes.edit_line
+    end
+
+    shoes.flow do
+      shoes.caption "Mobile number"
+      @mobile_number_field = shoes.edit_line
+    end
+
     # TODO 4. Add fields for the user to fill in, but only if they are
     # relevant to the given user type.
+
+
   end
 
   # Set the persons's name to the contents of the text box
