@@ -101,21 +101,21 @@ class Person
 
     # TODO 4. Add fields for the user to fill in, but only if they are
     # relevant to the given user type.
+=begin
+    if self.is_a?Trainee
 
-if self.is_a?Trainee
+         shoes.flow do
+             shoes.caption "Preferred text editor"
+             @preferred_text_editor = shoes.edit_line
+         end
 
-    shoes.flow do
-      shoes.caption "Preferred text editor"
-      @preferred_text_editor = shoes.edit_line
+    else
+         shoes.flow do 
+             shoes.caption "Teaching Experience"
+             @teaching_experience = shoes.edit_line
+         end
     end
-
-else
-    shoes.flow do 
-      shoes.caption "Teaching Experience"
-      @teaching_experience = shoes.edit_line
-    end
-end
-
+=end
   end
 
   # Set the persons's name to the contents of the text box
@@ -137,10 +137,28 @@ end
 class Trainee < Person
   attr_accessor :preferred_text_editor
 
+  def draw_questions
+    super
+    shoes.flow do
+        shoes.caption "Preferred text editor"
+        @preferred_text_editor = shoes.edit_line
+    end
+  end
 end
+
+
 
 class Instructor < Person
   attr_accessor :teaching_experience
+
+  def draw_questions
+    super
+    shoes.flow do 
+        shoes.caption "Teaching Experience"
+        @teaching_experience = shoes.edit_line
+    end
+
+  end
 end
 
 Shoes.app title: "Ruby Address Book", width: 520 do
@@ -151,6 +169,10 @@ Shoes.app title: "Ruby Address Book", width: 520 do
       button letter do
         # TODO 5. Show each of the Person objects in the address_book where the
         # last name matches.
+
+
+
+
       end
     end
   end
