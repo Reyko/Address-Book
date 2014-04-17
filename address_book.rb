@@ -13,10 +13,11 @@ class Person
   attr_accessor :first_name
   attr_accessor :last_name
   # TODO 1. Add more!
-  
-  attr_accessor :address
-  attr_accessor :phone_number
-  attr_accessor :mobile_number
+
+  attr_accessor :email
+  attr_accessor :github
+  attr_accessor :twitter
+  attr_accessor :fun_fact
 
 
   def initialize(shoes)
@@ -59,25 +60,28 @@ class Person
       @last_name_field = shoes.edit_line
     end
 
-        shoes.flow do
-      shoes.caption "Address"
-      @address_field = shoes.edit_line
+    shoes.flow do
+     shoes.caption "Email"
+     @email_field = shoes.edit_line
     end
 
     shoes.flow do
-      shoes.caption "Phone number"
-      @phone_number_field = shoes.edit_line
+      shoes.caption "Github"
+      @github_field = shoes.edit_line
     end
 
     shoes.flow do
-      shoes.caption "Mobile number"
-      @mobile_number_field = shoes.edit_line
+      shoes.caption "Twitter"
+      @twitter_field =shoes.edit_line
+    end
+
+    shoes.flow do
+      shoes.caption "Fun fact"
+      @fun_fact_field = shoes.edit_line
     end
 
     # TODO 4. Add fields for the user to fill in, but only if they are
     # relevant to the given user type.
-
-
   end
 
   # Set the persons's name to the contents of the text box
@@ -85,10 +89,10 @@ class Person
   def save_values
     self.first_name = @first_name_field.text.strip.chomp
     self.last_name = @last_name_field.text.strip.chomp
-    self.address = @address_field.text.strip.chomp
-    self.phone_number = @phone_number_field.text.strip.chomp
-    self.mobile_number = @mobile_number_field.text.strip.chomp
-
+    self.email = @email_field.text.strip.chomp
+    self.github = @github_field.text.strip.chomp
+    self.twitter = @twitter_field.text.strip.chomp
+    self.fun_fact = @fun_fact_field.text.strip.chomp
     # TODO: 2. Finish the implementation to set the other fields.
   end
 end
