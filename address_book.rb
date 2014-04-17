@@ -24,6 +24,24 @@ class Person
     self.shoes = shoes
   end
 
+
+  def self.make_person(type,gui)
+
+      case type
+
+        when "Trainee"
+
+          Trainee.new(gui).draw
+
+        when "Instructor"
+
+          Instructor.new(gui).draw
+
+      end 
+
+  end
+
+
   # Displays the input form to the user
   #
   def draw
@@ -45,6 +63,7 @@ class Person
         shoes.alert 'Saved'
       end
     end
+
   end
 
   # Renders some labels and textboxes to prompt the user for input
@@ -82,6 +101,21 @@ class Person
 
     # TODO 4. Add fields for the user to fill in, but only if they are
     # relevant to the given user type.
+
+if self.is_a?Trainee
+
+    shoes.flow do
+      shoes.caption "Preferred text editor"
+      @preferred_text_editor = shoes.edit_line
+    end
+
+else
+    shoes.flow do 
+      shoes.caption "Teaching Experience"
+      @teaching_experience = shoes.edit_line
+    end
+end
+
   end
 
   # Set the persons's name to the contents of the text box
@@ -93,12 +127,16 @@ class Person
     self.github = @github_field.text.strip.chomp
     self.twitter = @twitter_field.text.strip.chomp
     self.fun_fact = @fun_fact_field.text.strip.chomp
+
+    self.preferred_text_editor = @preferred_text_editor_field.text.strip.chomp
+    self.teaching_experience = @teaching_experience.text.strip.chomp
     # TODO: 2. Finish the implementation to set the other fields.
   end
 end
 
 class Trainee < Person
   attr_accessor :preferred_text_editor
+
 end
 
 class Instructor < Person
@@ -125,6 +163,10 @@ Shoes.app title: "Ruby Address Book", width: 520 do
 
         # TODO 3. Create a Trainee or an Instructor using a Person factory method
         # and store the result in @person. Show the fields for the user to fill in
+          @person = Person.make_person(selected.text,@form)
+         
+          debug @person.inspect
+
       end
     end
 
