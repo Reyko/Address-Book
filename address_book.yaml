@@ -1,0 +1,48 @@
+--- !ruby/object:Trainee 
+email: robert@gmail.com
+email_field: !ruby/object:Shoes::EditLine {}
+
+first_name: Robert
+first_name_field: !ruby/object:Shoes::EditLine {}
+
+fun_fact: Just test
+fun_fact_field: !ruby/object:Shoes::EditLine {}
+
+github: test.git
+github_field: !ruby/object:Shoes::EditLine {}
+
+last_name: Stiuard
+last_name_field: !ruby/object:Shoes::EditLine {}
+
+preferred_text_editor: Test edit
+preferred_text_editor_field: !ruby/object:Shoes::EditLine {}
+
+shoes: !ruby/object:Shoes::Stack {}
+
+twitter: "@test"
+twitter_field: !ruby/object:Shoes::EditLine {}
+
+--- !ruby/object:Trainee 
+email: seramak@gmail.com
+email_field: !ruby/object:Shoes::EditLine {}
+
+first_name: Serafeim
+first_name_field: !ruby/object:Shoes::EditLine {}
+
+fun_fact: Reading
+fun_fact_field: !ruby/object:Shoes::EditLine {}
+
+github: reyko.git
+github_field: !ruby/object:Shoes::EditLine {}
+
+last_name: Maroulis
+last_name_field: !ruby/object:Shoes::EditLine {}
+
+preferred_text_editor: Sublime
+preferred_text_editor_field: !ruby/object:Shoes::EditLine {}
+
+shoes: !ruby/object:Shoes::Stack {}
+
+twitter: "@Reyko86"
+twitter_field: !ruby/object:Shoes::EditLine {}
+

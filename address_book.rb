@@ -70,7 +70,7 @@ class Person
         # shoes.debug self.to_yaml
         filename = "address_book.yaml"
 
-        File.open(filename, "w") { |file| 
+        File.open(filename, "a") { |file| 
 
               file.write self.to_yaml
 
