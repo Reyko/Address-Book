@@ -26,19 +26,28 @@ class Person
 
 
   def self.make_person(type,gui)
-
       case type
-
         when "Trainee"
 
-          Trainee.new(gui).draw
+          Trainee.new(gui)
 
         when "Instructor"
 
-          Instructor.new(gui).draw
-
+          Instructor.new(gui)
       end 
+  end
 
+
+  def self.find_person(name) 
+    debug $address_book
+    $address_book.select do |person|
+
+          if person.last_name[0] == name
+              yield person
+          end
+
+     end
+  
   end
 
 
@@ -58,12 +67,24 @@ class Person
         $address_book << self
 
         # TODO: 6. Open a address_book.yml YAML file and write it out to disc
-        shoes.debug self.to_yaml
+        # shoes.debug self.to_yaml
+        filename = "address_book.yaml"
+
+        File.open(filename, "w") { |file| 
+
+              file.write self.to_yaml
+
+
+        }
+
+
+        # Create a new person object
+        new_person = Person.make_person(self.class.to_s, shoes)
+        new_person.draw
 
         shoes.alert 'Saved'
       end
     end
-
   end
 
   # Renders some labels and textboxes to prompt the user for input
@@ -101,21 +122,7 @@ class Person
 
     # TODO 4. Add fields for the user to fill in, but only if they are
     # relevant to the given user type.
-=begin
-    if self.is_a?Trainee
 
-         shoes.flow do
-             shoes.caption "Preferred text editor"
-             @preferred_text_editor = shoes.edit_line
-         end
-
-    else
-         shoes.flow do 
-             shoes.caption "Teaching Experience"
-             @teaching_experience = shoes.edit_line
-         end
-    end
-=end
   end
 
   # Set the persons's name to the contents of the text box
@@ -123,14 +130,12 @@ class Person
   def save_values
     self.first_name = @first_name_field.text.strip.chomp
     self.last_name = @last_name_field.text.strip.chomp
+   
+  # TODO: 2. Finish the implementation to set the other fields.
     self.email = @email_field.text.strip.chomp
     self.github = @github_field.text.strip.chomp
     self.twitter = @twitter_field.text.strip.chomp
     self.fun_fact = @fun_fact_field.text.strip.chomp
-
-    self.preferred_text_editor = @preferred_text_editor_field.text.strip.chomp
-    self.teaching_experience = @teaching_experience.text.strip.chomp
-    # TODO: 2. Finish the implementation to set the other fields.
   end
 end
 
@@ -141,8 +146,12 @@ class Trainee < Person
     super
     shoes.flow do
         shoes.caption "Preferred text editor"
-        @preferred_text_editor = shoes.edit_line
+        @preferred_text_editor_field = shoes.edit_line
     end
+  end
+  def save_values
+    super
+    self.preferred_text_editor = @preferred_text_editor_field.text.strip.chomp
   end
 end
 
@@ -155,9 +164,13 @@ class Instructor < Person
     super
     shoes.flow do 
         shoes.caption "Teaching Experience"
-        @teaching_experience = shoes.edit_line
+        @teaching_experience_field = shoes.edit_line
     end
+  end
 
+  def save_values
+    super
+    self.teaching_experience = @teaching_experience_field.text.strip.chomp
   end
 end
 
@@ -170,12 +183,22 @@ Shoes.app title: "Ruby Address Book", width: 520 do
         # TODO 5. Show each of the Person objects in the address_book where the
         # last name matches.
 
+    
+            Person.find_person(letter) do |contact| 
+              debug contact
 
+                    para  ("#{contact.first_name} #{contact.last_name}")                    
+                      
+                      
+            end
 
+          # }        
+       # }   
 
       end
     end
   end
+
 
   stack margin: 20 do
     flow do
@@ -186,9 +209,10 @@ Shoes.app title: "Ruby Address Book", width: 520 do
         # TODO 3. Create a Trainee or an Instructor using a Person factory method
         # and store the result in @person. Show the fields for the user to fill in
           @person = Person.make_person(selected.text,@form)
-         
-          debug @person.inspect
+          @person.draw
+          # address_book.push(@person)
 
+          debug @person.inspect
       end
     end
 
@@ -200,5 +224,6 @@ Shoes.app title: "Ruby Address Book", width: 520 do
     @person = Trainee.new(@form)
     @person.draw
   end
+
 
 end
