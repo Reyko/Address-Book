@@ -19,22 +19,23 @@ class Person
   attr_accessor :twitter
   attr_accessor :fun_fact
 
-
   def initialize(shoes)
     self.shoes = shoes
+    contacts_file = File.open( "address_book.yaml" )
+    
+    contacts = YAML::load_documents( contacts_file ) { |contact|
+     $address_book << contact
+    }
+   
   end
 
-
   def self.make_person(type,gui)
-      case type
-        when "Trainee"
-
-          Trainee.new(gui)
-
-        when "Instructor"
-
-          Instructor.new(gui)
-      end 
+    case type
+    when "Trainee"
+      Trainee.new(gui)
+    when "Instructor"
+      Instructor.new(gui)
+    end 
   end
 
 
@@ -42,14 +43,12 @@ class Person
     debug $address_book
     $address_book.select do |person|
 
-          if person.last_name[0] == name
-              yield person
-          end
+      if person.last_name[0] == name
+        yield person
+      end
 
      end
-  
   end
-
 
   # Displays the input form to the user
   #
@@ -70,18 +69,13 @@ class Person
         # shoes.debug self.to_yaml
         filename = "address_book.yaml"
 
-        File.open(filename, "a") { |file| 
-
-              file.write self.to_yaml
-
-
-        }
-
+        File.open(filename, "a") do |file| 
+          file.write self.to_yaml 
+        end
 
         # Create a new person object
-        new_person = Person.make_person(self.class.to_s, shoes)
-        new_person.draw
-
+        new_person = Person.make_person(self.class.to_s, shoes).draw
+        # new_person.draw
         shoes.alert 'Saved'
       end
     end
@@ -159,7 +153,6 @@ end
 
 class Instructor < Person
   attr_accessor :teaching_experience
-
   def draw_questions
     super
     shoes.flow do 
@@ -182,19 +175,22 @@ Shoes.app title: "Ruby Address Book", width: 520 do
       button letter do
         # TODO 5. Show each of the Person objects in the address_book where the
         # last name matches.
+        Person.find_person(letter) do |contact| 
+          debug contact
+          if @contact
+            @contact.clear
+          end
+          @contact = stack do
+            para("Type: #{contact.class}")
+            para("First name: #{contact.first_name}")
+            para("Last name: #{contact.last_name}") 
+            para("Email: #{contact.email}") 
+            para("Github: #{contact.github}") 
+            para("Twitter: #{contact.twitter}") 
+            para("Fun fact: #{contact.fun_fact}")  
+          end
 
-    
-            Person.find_person(letter) do |contact| 
-              debug contact
-
-                    para  ("#{contact.first_name} #{contact.last_name}")                    
-                      
-                      
-            end
-
-          # }        
-       # }   
-
+        end
       end
     end
   end
@@ -205,14 +201,12 @@ Shoes.app title: "Ruby Address Book", width: 520 do
       caption "Type"
       list_box :items => %w(Trainee Instructor) do |selected|
         debug selected.text
-
         # TODO 3. Create a Trainee or an Instructor using a Person factory method
         # and store the result in @person. Show the fields for the user to fill in
-          @person = Person.make_person(selected.text,@form)
-          @person.draw
-          # address_book.push(@person)
+        @person = Person.make_person(selected.text,@form)
+        @person.draw
 
-          debug @person.inspect
+        debug @person.inspect
       end
     end
 
@@ -221,9 +215,7 @@ Shoes.app title: "Ruby Address Book", width: 520 do
     @form = stack
 
     # Actually draw the form using Trainee as a default
-    @person = Trainee.new(@form)
-    @person.draw
+    @person = Trainee.new(@form).draw
+
   end
-
-
 end
